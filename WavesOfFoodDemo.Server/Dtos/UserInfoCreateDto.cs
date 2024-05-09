@@ -2,16 +2,14 @@
 {
     public class UserInfoCreateDto
     {
-        public Guid Id { get; set; }
+        public string? UserName { get; set; }
 
-        public string? userName { get; set; }
+        public string UserPassword { get; set; }
 
-        public decimal userPassword { get; set; }
+        public string? UserFullName { get; set; }
 
-        public string? userFullName { get; set; }
+        public string? UserAddress { get; set; }
 
-        public string? userAddress { get; set; }
-
-        public string? userPhone { get; set; }
+        public string? UserPhone { get; set; }
     }
 }
