@@ -27,10 +27,12 @@ public class FoodDbContext : DbContext
     }
 
     public virtual DbSet<FoodInfo> FoodInfos { get; set; }
+    public virtual DbSet<UserInfo> UserInfos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FoodInfo>().ToTable("FoodInfo").HasKey(x => x.Id);
+        modelBuilder.Entity<UserInfo>().ToTable("UserInfo").HasKey(x => x.Id);
     }
 
     public override int SaveChanges()

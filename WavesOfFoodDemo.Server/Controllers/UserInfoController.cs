@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Services;
 
@@ -6,25 +6,25 @@ namespace WavesOfFoodDemo.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FoodInfoController : ControllerBase
+    public class UserInfoController : ControllerBase
     {
-        private readonly ILogger<FoodInfoController> _logger;
-        private readonly IFoodInfoService _foodInfoService;
+        private readonly ILogger<UserInfoController> _logger;
+        private readonly IUserInfoService _userInfoService;
 
-        public FoodInfoController(
-            ILogger<FoodInfoController> logger,
-            IFoodInfoService foodInfoService)
+        public UserInfoController(
+            ILogger<UserInfoController> logger,
+            IUserInfoService userInfoService)
         {
             _logger = logger;
-            _foodInfoService = foodInfoService;
+            _userInfoService = userInfoService;
         }
 
-        [HttpGet("GetFoodInfos")]
-        public async Task<IActionResult> GetFoodInfos()
+        [HttpGet("GetUserInfos")]
+        public async Task<IActionResult> GetUserInfos()
         {
             try
             {
-                var data = await _foodInfoService.GetFoodInfoDtosAsync();
+                var data = await _userInfoService.GetUserInfoDtosAsync();
                 return Ok(data);
             }
             catch (Exception ex)
@@ -33,12 +33,12 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPost("PostFoodInfo")]
-        public async Task<IActionResult> PostFoodInfo(FoodInfoCreateDto foodInfoCreateDto)
+        [HttpPost("PostUserInfo")]
+        public async Task<IActionResult> PostUserInfo(UserInfoCreateDto userInfoCreateDto)
         {
             try
             {
-                var data = await _foodInfoService.AddFoodInfoAsync(foodInfoCreateDto);
+                var data = await _userInfoService.AddUserInfoAsync(userInfoCreateDto);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -47,12 +47,12 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPut("PutFoodInfo")]
-        public async Task<IActionResult> PutFoodInfo(FoodInfoDto foodInfoDto)
+        [HttpPut("PutUserInfo")]
+        public async Task<IActionResult> PutUserInfo(UserInfoDto userInfoDto)
         {
             try
             {
-                var data = await _foodInfoService.EditFoodInfoAsync(foodInfoDto);
+                var data = await _userInfoService.EditUserInfoAsync(userInfoDto);
                 if (data == null)
                 {
                     return NotFound();
@@ -65,12 +65,12 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpDelete("DeleteFoodInfo/{id}")]
-        public async Task<IActionResult> DeleteFoodInfo(Guid id)
+        [HttpDelete("DeleteUserInfo/{id}")]
+        public async Task<IActionResult> DeleteUserInfo(Guid id)
         {
             try
             {
-                var data = await _foodInfoService.RemoveFoodInfoDtosAsync(id);
+                var data = await _userInfoService.RemoveUserInfoDtosAsync(id);
                 if (data == null)
                 {
                     return NotFound();

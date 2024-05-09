@@ -11,5 +11,7 @@ public static class ApplicationServicesExtensions
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddTransient<IFoodInfoRepository, FoodInfoRepository>();
         services.AddTransient<IFoodInfoService, FoodInfoService>();
+        services.AddTransient<IUserInfoRepository, UserInfoRepository>();
+        services.AddTransient<IUserInfoService, UserInfoService>();
     }
 }
