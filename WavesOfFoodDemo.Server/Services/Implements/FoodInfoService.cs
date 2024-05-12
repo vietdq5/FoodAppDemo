@@ -82,4 +82,18 @@ public class FoodInfoService : IFoodInfoService
             throw;
         }
     }
+
+    public async Task<List<FoodInfoDto>> SearchFoodInfoDtosAsync(string foodName)
+    {
+        try
+        {
+            var data = await _foodInfoRepository.SearchFoodInfoDtosAsync(foodName);
+            return _mapper.Map<List<FoodInfoDto>>(data);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+    }
 }

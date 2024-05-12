@@ -11,4 +11,5 @@ public interface IFoodInfoService
     Task<bool> AddFoodInfoAsync(FoodInfoCreateDto foodInfoCreateDto);
     Task<bool?> EditFoodInfoAsync(FoodInfoDto foodInfoDto);
     Task<bool?> RemoveFoodInfoDtosAsync(Guid id);
+    Task<List<FoodInfoDto>> SearchFoodInfoDtosAsync(string foodName);
 }

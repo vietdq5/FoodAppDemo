@@ -33,6 +33,20 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
+        [HttpGet("SearchFoodInfos")]
+        public async Task<IActionResult> SearchFoodInfos(string foodName)
+        {
+            try
+            {
+                var data = await _foodInfoService.SearchFoodInfoDtosAsync(foodName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("PostFoodInfo")]
         public async Task<IActionResult> PostFoodInfo(FoodInfoCreateDto foodInfoCreateDto)
         {
