@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Services;
 
@@ -22,7 +19,7 @@ namespace WavesOfFoodDemo.Server.Controllers
             _foodInfoService = foodInfoService;
         }
 
-        [HttpGet(Name = "GetFoodInfos")]
+        [HttpGet("GetFoodInfos")]
         public async Task<IActionResult> GetFoodInfos()
         {
             try
@@ -36,7 +33,21 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPost(Name = "PostFoodInfo")]
+        [HttpGet("SearchFoodInfos")]
+        public async Task<IActionResult> SearchFoodInfos(string foodName)
+        {
+            try
+            {
+                var data = await _foodInfoService.SearchFoodInfoDtosAsync(foodName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("PostFoodInfo")]
         public async Task<IActionResult> PostFoodInfo(FoodInfoCreateDto foodInfoCreateDto)
         {
             try
@@ -50,7 +61,7 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPut(Name = "PutFoodInfo")]
+        [HttpPut("PutFoodInfo")]
         public async Task<IActionResult> PutFoodInfo(FoodInfoDto foodInfoDto)
         {
             try
@@ -68,7 +79,7 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpDelete(Name = "DeleteFoodInfo/{id}")]
+        [HttpDelete("DeleteFoodInfo/{id}")]
         public async Task<IActionResult> DeleteFoodInfo(Guid id)
         {
             try
