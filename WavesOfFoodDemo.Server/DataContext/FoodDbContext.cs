@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,11 +29,17 @@ public class FoodDbContext : DbContext
 
     public virtual DbSet<FoodInfo> FoodInfos { get; set; }
     public virtual DbSet<UserInfo> UserInfos { get; set; }
+    public virtual DbSet<CartInfo> CartInfos { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FoodInfo>().ToTable("FoodInfo").HasKey(x => x.Id);
         modelBuilder.Entity<UserInfo>().ToTable("UserInfo").HasKey(x => x.Id);
+        modelBuilder.Entity<CartInfo>().ToTable("CartInfos")
+        .HasOne<UserInfo>(s => s.UserInfo)
+        .WithMany(g => g.CartInfos)
+        .HasForeignKey(s => s.UserId);
     }
 
     public override int SaveChanges()

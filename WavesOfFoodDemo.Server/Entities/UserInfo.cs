@@ -11,4 +11,6 @@ public class UserInfo : BaseEntities
     public string? UserAddress { get; set; }
 
     public string? UserPhone { get; set; }
+
+    public ICollection<CartInfo> CartInfos { get; set; }
 }
