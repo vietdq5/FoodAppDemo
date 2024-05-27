@@ -25,21 +25,35 @@ public class FoodDbContext : DbContext
         optionsBuilder.UseNpgsql(_postgreSetting.ConnectionString ?? "");
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.EnableDetailedErrors();
+        optionsBuilder.LogTo(message => Debug.WriteLine(message));
     }
 
     public virtual DbSet<FoodInfo> FoodInfos { get; set; }
     public virtual DbSet<UserInfo> UserInfos { get; set; }
     public virtual DbSet<CartInfo> CartInfos { get; set; }
+    public virtual DbSet<CartDetails> CartDetails { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FoodInfo>().ToTable("FoodInfo").HasKey(x => x.Id);
+
         modelBuilder.Entity<UserInfo>().ToTable("UserInfo").HasKey(x => x.Id);
+
         modelBuilder.Entity<CartInfo>().ToTable("CartInfos")
-        .HasOne<UserInfo>(s => s.UserInfo)
+        .HasOne<UserInfo>(s => s.UserInfos)
         .WithMany(g => g.CartInfos)
         .HasForeignKey(s => s.UserId);
+
+        modelBuilder.Entity<CartDetails>().HasKey(x => x.Id);
+        modelBuilder.Entity<CartDetails>()
+        .HasOne<FoodInfo>(s => s.FoodInfo)
+        .WithMany(g => g.CartDetails)
+        .HasForeignKey(s => s.FoodId);
+        modelBuilder.Entity<CartDetails>()
+        .HasOne<CartInfo>(s => s.CartInfo)
+        .WithMany(g => g.CartDetails)
+        .HasForeignKey(s => s.CartId);
     }
 
     public override int SaveChanges()

@@ -2,7 +2,8 @@
 {
     public class CartInfoCreateDto
     {
-        public String? Status {  get; set; }
-        public String? DateOrder { get; set; }
+        public string? Status {  get; set; }
+        public DateTime? DateOrder { get; set; }
+        public Guid UserId { get; set; }
     }
 }

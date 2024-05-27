@@ -6,25 +6,25 @@ namespace WavesOfFoodDemo.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserInfoController : ControllerBase
+    public class CartInfoController : ControllerBase
     {
-        private readonly ILogger<UserInfoController> _logger;
-        private readonly IUserInfoService _userInfoService;
+        private readonly ILogger<CartInfoController> _logger;
+        private readonly ICartInfoService _cartInfoService;
 
-        public UserInfoController(
-            ILogger<UserInfoController> logger,
-            IUserInfoService userInfoService)
+        public CartInfoController(
+            ILogger<CartInfoController> logger,
+            ICartInfoService cartInfoService)
         {
             _logger = logger;
-            _userInfoService = userInfoService;
+            _cartInfoService = cartInfoService;
         }
 
-        [HttpGet("GetUserInfos")]
-        public async Task<IActionResult> GetUserInfos()
+        [HttpGet("GetCartInfos")]
+        public async Task<IActionResult> GetCartInfos()
         {
             try
             {
-                var data = await _userInfoService.GetUserInfoDtosAsync();
+                var data = await _cartInfoService.GetCartInfoDtosAsync();
                 return Ok(data);
             }
             catch (Exception ex)
@@ -33,12 +33,16 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpGet("SearchUserInfos")]
-        public async Task<IActionResult> SearchUserInfos(string userName)
+        [HttpGet("GetTransactions/{userId}")]
+        public async Task<IActionResult> GetTransactions(Guid userId)
         {
             try
             {
-                var data = await _userInfoService.SearchUserInfoDtosAsync(userName);
+                if (userId == Guid.Empty)
+                {
+                    return NotFound("User not found");
+                }
+                var data = await _cartInfoService.GetTransactions(userId);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -47,12 +51,13 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPost("PostUserInfo")]
-        public async Task<IActionResult> PostUserInfo(UserInfoCreateDto userInfoCreateDto)
+
+        [HttpPost("PostCartInfo")]
+        public async Task<IActionResult> PostFoodInfo(CartInfoCreateDto cartInfoCreateDto)
         {
             try
             {
-                var data = await _userInfoService.AddUserInfoAsync(userInfoCreateDto);
+                var data = await _cartInfoService.AddCartInfoAsync(cartInfoCreateDto);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -61,12 +66,12 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpPut("PutUserInfo")]
-        public async Task<IActionResult> PutUserInfo(UserInfoDto userInfoDto)
+        [HttpPut("PutCartInfo")]
+        public async Task<IActionResult> PutCartInfo(CartInfoDto cartInfoDto)
         {
             try
             {
-                var data = await _userInfoService.EditUserInfoAsync(userInfoDto);
+                var data = await _cartInfoService.EditCartInfoAsync(cartInfoDto);
                 if (data == null)
                 {
                     return NotFound();
@@ -79,12 +84,12 @@ namespace WavesOfFoodDemo.Server.Controllers
             }
         }
 
-        [HttpDelete("DeleteUserInfo/{id}")]
-        public async Task<IActionResult> DeleteUserInfo(Guid id)
+        [HttpDelete("DeleteCartInfo/{id}")]
+        public async Task<IActionResult> DeleteCartInfo(Guid id)
         {
             try
             {
-                var data = await _userInfoService.RemoveUserInfoDtosAsync(id);
+                var data = await _cartInfoService.RemoveCartInfoDtosAsync(id);
                 if (data == null)
                 {
                     return NotFound();

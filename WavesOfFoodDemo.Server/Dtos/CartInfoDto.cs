@@ -2,6 +2,9 @@
 {
     public class CartInfoDto : CartInfoCreateDto
     {
-        public Guid CartId { get; set; }
+        public Guid Id { get; set; }
+        public CartDetailsDto CartDetailsDto { get; set; } = new CartDetailsDto()
+        {
+        };
     }
 }

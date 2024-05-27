@@ -8,6 +8,7 @@
 
         public Guid UserId { get; set; }
 
-        public UserInfo UserInfo { get; set; }
+        public UserInfo UserInfos { get; set; }
+        public IList<CartDetails> CartDetails { get; set; }
     }
 }

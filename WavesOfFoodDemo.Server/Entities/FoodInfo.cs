@@ -13,4 +13,5 @@ public class FoodInfo : BaseEntities
     public string? Description { get; set; }
 
     public string? Ingredient { get; set; }
+    public IList<CartDetails> CartDetails { get; set; }
 }

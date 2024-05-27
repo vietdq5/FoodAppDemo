@@ -13,5 +13,9 @@ public static class ApplicationServicesExtensions
         services.AddTransient<IFoodInfoService, FoodInfoService>();
         services.AddTransient<IUserInfoRepository, UserInfoRepository>();
         services.AddTransient<IUserInfoService, UserInfoService>();
+        services.AddTransient<ICartInfoRepository, CartInfoRepository>();
+        services.AddTransient<ICartInfoService, CartInfoService>();
+        services.AddTransient<ICartDetailsRepository, CartDetailsRepository>();
+        services.AddTransient<ICartDetailsService, CartDetailsService>();
     }
 }

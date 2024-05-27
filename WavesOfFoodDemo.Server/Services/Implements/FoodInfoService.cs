@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Entities;
 using WavesOfFoodDemo.Server.Infrastructures;
@@ -23,7 +19,7 @@ public class FoodInfoService : IFoodInfoService
     }
 
     public async Task<List<FoodInfoDto>> GetFoodInfoDtosAsync()
-    {
+    { 
         try
         {
             var data = await _foodInfoRepository.GetAllAsync();

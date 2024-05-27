@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Entities;
 using WavesOfFoodDemo.Server.Infrastructures;
@@ -77,6 +73,19 @@ public class UserInfoService : IUserInfoService
             return await _userInfoRepository.DeleteByKey(id);
         }
         catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+    }
+    public async Task<List<UserInfoDto>> SearchUserInfoDtosAsync(string userName)
+    {
+        try
+        {
+            var data = await _userInfoRepository.SearchUserInfoDtosAsync(userName);
+            return _mapper.Map<List<UserInfoDto>>(data);
+        }
+        catch ( Exception ex)
         {
             _logger.LogError(ex.Message);
             throw;
