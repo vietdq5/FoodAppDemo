@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WavesOfFoodDemo.Server.Dtos;
+using WavesOfFoodDemo.Server.Dtos.CartDetails;
 using WavesOfFoodDemo.Server.Services;
 
 namespace WavesOfFoodDemo.Server.Controllers
@@ -101,5 +102,24 @@ namespace WavesOfFoodDemo.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("PostCartDetailInfo")]
+        public async Task<IActionResult> PostCartDetailInfo(CartDetailInfoDto cartInfoCreateDto)
+        {
+            try
+            {
+                var data = await _cartInfoService.PostCartDetailInfo(cartInfoCreateDto);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

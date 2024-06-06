@@ -9,4 +9,5 @@ public interface IFoodInfoService
     Task<bool?> EditFoodInfoAsync(FoodInfoDto foodInfoDto);
     Task<bool?> RemoveFoodInfoDtosAsync(Guid id);
     Task<List<FoodInfoDto>> SearchFoodInfoDtosAsync(string foodName);
+    Task<List<FoodInfoDto>> GetPopularFoods();
 }

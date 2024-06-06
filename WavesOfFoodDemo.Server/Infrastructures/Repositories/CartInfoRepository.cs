@@ -10,7 +10,7 @@ public class CartInfoRepository : GenericRepository<CartInfo>, ICartInfoReposito
     public CartInfoRepository(FoodDbContext foodDbContext) : base(foodDbContext)
     {
     }
-
+   
     public async Task<IEnumerable<CartHistoryDto>> GetTransactions(Guid userId)
     {
         var query = _foodDbContext.CartInfos
@@ -25,7 +25,7 @@ public class CartInfoRepository : GenericRepository<CartInfo>, ICartInfoReposito
         var result = query.Select(item => new CartHistoryDto()
         {
             Status = item.Status,
-            DateOrder = item.DateOrder,
+            DateOrder = item.DateOrder.Value.ToString("MM/dd/yyyy HH:mm"),
             TotalPrice = item.CartDetails.Sum(s => s.Quantity * s.FoodInfo.Price),
             CartDetails = item.CartDetails.Select(cd => new CartdetailHistoryDto()
             {
@@ -37,4 +37,13 @@ public class CartInfoRepository : GenericRepository<CartInfo>, ICartInfoReposito
         });
         return await result.ToListAsync();
     }
+
+    public async Task<CartInfo?> GetCartInfoDetail(Guid cartInfoId)
+    {
+        return await _foodDbContext.CartInfos
+           .Where(item => item.Id == cartInfoId)
+           .Include(item => item.CartDetails)
+           .FirstOrDefaultAsync();
+    }
+
 }

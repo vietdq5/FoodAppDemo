@@ -96,5 +96,30 @@ namespace WavesOfFoodDemo.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("LoginUser")]
+        public async Task<IActionResult> LoginUserInfoAsync(UserLoginDto userLoginDto)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var userInfo = await _userInfoService.LoginUserInfoAsync(userLoginDto.UserName, userLoginDto.PassWord);
+                if (userInfo != null)
+                {
+                    return Ok(userInfo);
+                }
+                else
+                {
+                    return Unauthorized("Invalid username or password");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -5,5 +5,6 @@ namespace WavesOfFoodDemo.Server.Infrastructures;
 
 public interface ICartInfoRepository : IGenericRepository<CartInfo>
 {
+    Task<CartInfo?> GetCartInfoDetail(Guid cartInfoId);
     Task<IEnumerable<CartHistoryDto>> GetTransactions(Guid userId);
 }

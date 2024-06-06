@@ -96,5 +96,20 @@ namespace WavesOfFoodDemo.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("GetPopularFoods")]
+        public async Task<IActionResult> GetPopularFoods()
+        {
+            try
+            {
+                var data = await _foodInfoService.GetPopularFoods();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using System.Dynamic;
 using WavesOfFoodDemo.Server.Dtos;
+using WavesOfFoodDemo.Server.Dtos.CartDetails;
 using WavesOfFoodDemo.Server.Entities;
 using WavesOfFoodDemo.Server.Infrastructures;
 
@@ -9,13 +11,19 @@ namespace WavesOfFoodDemo.Server.Services
     {
         private readonly ILogger<CartInfoService> _logger;
         private readonly ICartInfoRepository _cartInfoRepository;
+        private readonly ICartDetailsRepository _cartDetailsRepository;
         private readonly IMapper _mapper;
 
-        public CartInfoService(ICartInfoRepository cartInfoRepository, ILogger<CartInfoService> logger, IMapper mapper)
+        public CartInfoService(
+            ICartInfoRepository cartInfoRepository, 
+            ILogger<CartInfoService> logger,
+            IMapper mapper, 
+            ICartDetailsRepository cartDetailsRepository)
         {
             _cartInfoRepository = cartInfoRepository;
             _logger = logger;
             _mapper = mapper;
+            _cartDetailsRepository = cartDetailsRepository;
         }
 
         public async Task<bool> AddCartInfoAsync(CartInfoCreateDto cartInfoCreateDto)
@@ -92,5 +100,72 @@ namespace WavesOfFoodDemo.Server.Services
             }
         }
 
+        public async Task<bool?> PostCartDetailInfo(CartDetailInfoDto cartInfoCreateDto)
+        {
+            bool result = false;
+            // update
+            if (cartInfoCreateDto?.CartInfoId != null)
+            {
+                var cartInfo = await _cartInfoRepository.GetCartInfoDetail(cartInfoCreateDto.CartInfoId.Value);
+                if (cartInfo == null)
+                {
+                    return null;
+                }
+                cartInfo.Status = cartInfoCreateDto.Status;
+                //if(DateTime.TryParse(cartInfoCreateDto.DateOrder, out var dateOrder))
+                //{
+                //    cartInfo.DateOrder = dateOrder;
+                //}
+                //else
+                //{
+                //    cartInfo.DateOrder = DateTime.UtcNow;
+                //}
+                cartInfo.DateOrder = cartInfoCreateDto.DateOrder;
+                // remove cart detail
+                cartInfo.CartDetails.Clear();
+                result = await _cartInfoRepository.UpdateAsync(cartInfo);
+                foreach (var item in cartInfoCreateDto.CartDetailDtos)
+                {
+                    var cdt = new CartDetails()
+                    {
+                        FoodId = item.FoodId,
+                        CartId = cartInfo.Id,
+                        Quantity = item.Quantity,
+                        TotalPrice = item.TotalPrice,
+                    };
+                    _cartDetailsRepository.Add(cdt);
+                }
+            }
+            // create new gio hang
+            else
+            {
+                var cartInfo = new CartInfo();
+                cartInfo.Id = Guid.NewGuid();
+                cartInfo.Status = cartInfoCreateDto.Status;
+                cartInfo.DateOrder = cartInfoCreateDto.DateOrder;
+                //if (DateTime.TryParse(cartInfoCreateDto.DateOrder, out var dateOrder))
+                //{
+                //    cartInfo.DateOrder = dateOrder;
+                //}
+                //else
+                //{
+                //    cartInfo.DateOrder = DateTime.UtcNow;
+                //}
+                cartInfo.UserId = cartInfoCreateDto.UserId;
+                result = await _cartInfoRepository.AddAsync(cartInfo);
+                foreach (var item in cartInfoCreateDto.CartDetailDtos)
+                {
+                    var cdt = new CartDetails()
+                    {
+                        FoodId = item.FoodId,
+                        CartId = cartInfo.Id,
+                        Quantity = item.Quantity,
+                        TotalPrice = item.TotalPrice,
+                    };
+                    _cartDetailsRepository.Add(cdt);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -92,4 +92,17 @@ public class FoodInfoService : IFoodInfoService
             throw;
         }
     }
+
+    public async Task<List<FoodInfoDto>> GetPopularFoods()
+    {
+        try
+        {
+            return await _foodInfoRepository.GetPopularFoods();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+    }
 }

@@ -91,4 +91,25 @@ public class UserInfoService : IUserInfoService
             throw;
         }
     }
+
+    public async Task<UserInfoDto> LoginUserInfoAsync(string userName, string userPassword)
+    {
+        try
+        {
+            var data = await _userInfoRepository.LoginUserInfoAsync(userName, userPassword);
+            if (data != null)
+            {
+                return _mapper.Map<UserInfoDto>(data);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+    }
 }
