@@ -5,6 +5,6 @@ namespace WavesOfFoodDemo.Server.Infrastructures;
 
 public interface IFoodInfoRepository : IGenericRepository<FoodInfo>
 {
-    Task<List<FoodInfoDto>> GetPopularFoods();
+    Task<List<FoodInfo>> GetPopularFoods();
     Task<List<FoodInfo>> SearchFoodInfoDtosAsync(string foodName);
 }

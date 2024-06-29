@@ -13,4 +13,5 @@ public class FoodInfoCreateDto
     public string? Description { get; set; }
 
     public string? Ingredient { get; set; }
+    public string? FoodQuantity { get; set; }
 }

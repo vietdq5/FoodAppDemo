@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WavesOfFoodDemo.Server.DataContext;
-using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Entities;
 
 namespace WavesOfFoodDemo.Server.Infrastructures;
@@ -18,8 +17,20 @@ public class FoodInfoRepository : GenericRepository<FoodInfo>, IFoodInfoReposito
         return await query.AsNoTracking().ToListAsync();
     }
 
-    public Task<List<FoodInfoDto>> GetPopularFoods()
+    public async Task<List<FoodInfo>> GetPopularFoods()
     {
-        throw new NotImplementedException();
+        var query = _foodDbContext.CartDetails.AsQueryable();
+        var queryGroup = query.GroupBy(s => s.FoodId);
+        var newQuery = queryGroup
+            .Select(s => new
+            {
+                FoodId = s.Key,
+                FoodInfoAfterGroup = s.First().FoodInfo,
+                SumQuantity = s.Sum(t => t.Quantity)
+            })
+            .OrderByDescending(s => s.SumQuantity)
+            .Take(4);
+        var dataGroup = await newQuery.ToListAsync();
+        return dataGroup.Select(s => s.FoodInfoAfterGroup).ToList();
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace WavesOfFoodDemo.Server.Dtos;
 public class CartHistoryDto
 {
+    public Guid Id { get; set; }
     public string DateOrder { get; set; }
     public string Status { get; set; }
     public decimal TotalPrice { get; set; }

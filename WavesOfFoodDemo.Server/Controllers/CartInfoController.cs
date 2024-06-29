@@ -53,6 +53,21 @@ namespace WavesOfFoodDemo.Server.Controllers
         }
 
 
+        [HttpGet("GetAllTransactions")]
+        public async Task<IActionResult> GetTransactions()
+        {
+            try
+            {
+                var data = await _cartInfoService.GetTransactions();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpPost("PostCartInfo")]
         public async Task<IActionResult> PostFoodInfo(CartInfoCreateDto cartInfoCreateDto)
         {
@@ -109,6 +124,24 @@ namespace WavesOfFoodDemo.Server.Controllers
             try
             {
                 var data = await _cartInfoService.PostCartDetailInfo(cartInfoCreateDto);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("UpdateStatusCartInfo")]
+        public async Task<IActionResult> UpdateStatusCartInfo(UpdateStatusCartDetailDto updateStatusCart)
+        {
+            try
+            {
+                var data = await _cartInfoService.UpdateStatusCartInfo(updateStatusCart);
                 if (data == null)
                 {
                     return NotFound();

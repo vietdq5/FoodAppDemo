@@ -11,19 +11,18 @@ public class CartInfoRepository : GenericRepository<CartInfo>, ICartInfoReposito
     {
     }
    
-    public async Task<IEnumerable<CartHistoryDto>> GetTransactions(Guid userId)
+    public async Task<IEnumerable<CartHistoryDto>> GetTransactions(Guid? userId = null)
     {
         var query = _foodDbContext.CartInfos
-            .Where(item => item.UserId == userId)
             .AsNoTracking()
             .AsQueryable();
-        //foreach (var cartInfo in query)
-        //{
-        //    var newObject = new CartHistoryDto();
-        //    newObject.Status = cartInfo.Status;
-        //}
+        if (userId != null)
+        {
+            query = query.Where(item => item.UserId == userId);
+        }
         var result = query.Select(item => new CartHistoryDto()
         {
+            Id = item.Id,
             Status = item.Status,
             DateOrder = item.DateOrder.Value.ToString("MM/dd/yyyy HH:mm"),
             TotalPrice = item.CartDetails.Sum(s => s.Quantity * s.FoodInfo.Price),
@@ -45,5 +44,4 @@ public class CartInfoRepository : GenericRepository<CartInfo>, ICartInfoReposito
            .Include(item => item.CartDetails)
            .FirstOrDefaultAsync();
     }
-
 }

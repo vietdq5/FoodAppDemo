@@ -2,6 +2,7 @@
 using WavesOfFoodDemo.Server.Dtos;
 using WavesOfFoodDemo.Server.Entities;
 using WavesOfFoodDemo.Server.Infrastructures;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WavesOfFoodDemo.Server.Services;
 
@@ -97,7 +98,8 @@ public class FoodInfoService : IFoodInfoService
     {
         try
         {
-            return await _foodInfoRepository.GetPopularFoods();
+            var data = await _foodInfoRepository.GetPopularFoods();
+            return _mapper.Map<List<FoodInfoDto>>(data);
         }
         catch (Exception ex)
         {
